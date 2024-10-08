@@ -56,6 +56,8 @@ namespace _23F_Halmaz_rendezessel
 
 			private int Helye(T x)
 			{
+				if (Count==0) 
+					return 0;
 				int e = 0;
 				int v = this.lista.Count - 1;
 				int k;
@@ -84,7 +86,7 @@ namespace _23F_Halmaz_rendezessel
 			public void Add(T e)
 			{
 				int h = Helye(e);
-				if (comparator(lista[h], e)!=0)
+				if (h==Count || comparator(lista[h], e)!=0)
 				{
 					this.lista.Insert(h, e);
 				}
@@ -146,7 +148,24 @@ namespace _23F_Halmaz_rendezessel
 
 			public static HalmazRendezessel<T> operator *(HalmazRendezessel<T> a, HalmazRendezessel<T> b)
 			{
-				throw new NotImplementedException();
+				int i = 0;
+				int j = 0;
+				HalmazRendezessel<T> result = new HalmazRendezessel<T>(a.comparator);
+
+				while (i < a.Count && j < b.Count)
+				{
+					if (result.comparator(a.lista[i], b.lista[j]) == -1)
+						i++;
+					else if (result.comparator(a.lista[i], b.lista[j]) == 1)
+						j++;
+					else
+					{
+						result.Add(a.lista[i]);
+						i++;
+						j++;
+					}
+				}
+				return result;
 			}
 
 			public static bool operator <(HalmazRendezessel<T> a, HalmazRendezessel<T> b)
@@ -194,7 +213,7 @@ namespace _23F_Halmaz_rendezessel
 			HalmazRendezessel<int> h = new HalmazRendezessel<int>(new List<int> { 3, 7, 1, 2, 6, 1, 2 }, szokasos);
 			HalmazRendezessel<int> g = new HalmazRendezessel<int>(new List<int> { 1, 2, 3, 5, 8, 9, 10, 14, 17, 18 }, szokasos);
 
-            Console.WriteLine(h);
+            Console.WriteLine(h*g);
 
         }
 	}
